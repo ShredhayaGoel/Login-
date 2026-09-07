@@ -15,6 +15,8 @@ const signup = async (req, res) => {
             message: "User createed succesfully",
             user: user
         })
+        console.log("SIGNUP PASSWORD:", req.body.password);
+
 
     }
     catch (error) {
@@ -25,45 +27,7 @@ const signup = async (req, res) => {
     };
 };
 
-const login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        // 1. Find user by email
-        const user = await User.findOne({ email });
-
-        if (!user) {
-            return res.status(401).json({
-                message: "Invalid email or password"
-            });
-        }
-
-        // 2. Compare entered password with hashed password
-        const isMatch = await bcrypt.compare(password, user.password);
-
-        if (!isMatch) {
-            return res.status(401).json({
-                message: "Invalid email or password"
-            });
-        }
-
-        // 3. Login successful
-        res.json({
-            message: "Login successful",
-            user: user
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            message: "Something went wrong",
-            error: error.message
-        });
-    }
-};
-
-
 
 module.exports = {
     signup
-    , login
 };
