@@ -1,7 +1,43 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { User, Mail, Lock, Eye, Truck, ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 function Signup() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch("http://localhost:3000/users/signup", {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password,
+      }),
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+
+    setSuccess("Account created successfully!");
+
+    setTimeout(() => {
+      navigate("/login");
+    }, 2000);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50 flex items-center justify-center px-4 py-8">
       {/* Signup Card */}
@@ -23,7 +59,7 @@ function Signup() {
         </div>
 
         {/* Form */}
-        <form className="space-y-5">
+        <form onSubmit={handleSignup} className="space-y-5">
           {/* Name */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -39,6 +75,8 @@ function Signup() {
               <input
                 type="text"
                 placeholder="Enter your full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none transition-all duration-300 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
               />
             </div>
@@ -59,6 +97,8 @@ function Signup() {
               <input
                 type="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none transition-all duration-300 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
               />
             </div>
@@ -79,6 +119,8 @@ function Signup() {
               <input
                 type="password"
                 placeholder="Create a password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-12 pr-12 py-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none transition-all duration-300 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
               />
 
@@ -120,6 +162,8 @@ function Signup() {
             <ArrowRight size={19} />
           </button>
         </form>
+
+        {success && <p>{success}</p>}
 
         {/* Login */}
         <p className="text-center text-gray-500 mt-7">
