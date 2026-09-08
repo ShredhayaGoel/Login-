@@ -8,10 +8,11 @@ function NewPassword() {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -24,11 +25,34 @@ function NewPassword() {
       return;
     }
 
-    // Later API call will come here
+    try {
+      const response = await fetch(
+        "http://localhost:3000/users/resetPassword",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            newPassword: password,
+            confirmPassword: confirmPassword,
+          }),
+        },
+      );
 
-    alert("Password updated successfully");
+      const data = await response.json();
 
-    navigate("/login");
+      if (response.ok) {
+        alert(data.message);
+        navigate("/login");
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Server error");
+    }
   };
 
   return (
@@ -52,6 +76,13 @@ function NewPassword() {
           <form onSubmit={handleSubmit}>
             {/* New Password */}
             <div className="mb-5">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 New Password
               </label>
