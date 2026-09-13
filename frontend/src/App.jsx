@@ -5,6 +5,7 @@ import Signup from "./pages/signup";
 import ForgotPassword from "./pages/forgotpassword";
 import NewPassword from "./pages/newpassword";
 import Dashboard from "./pages/dashboard";
+import Verifyotp from "./pages/verifyoyp";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/newpassword" element={<NewPassword />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/verifyotp" element={<Verifyotp />} />
       </Routes>
     </BrowserRouter>
   );
