@@ -29,7 +29,7 @@ function ForgotPassword() {
       setSuccess("User found!");
 
       setTimeout(() => {
-        navigate("/newpassword");
+        navigate("/verifyotp");
       }, 1500);
     } catch (error) {
       console.log(error);
