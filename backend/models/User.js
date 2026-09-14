@@ -7,9 +7,19 @@ const userschema = new mongoose.Schema(
         password: String,
         age: Number,
         mobile: Number,
-        address: String
+        address: String,
+
+        twoFactorSecret: String,
+
+        twoFactorEnabled: {
+            type: Boolean,
+            default: false
+        }
+
     }
 );
+
+
 
 
 const User = mongoose.model("User", userschema);
